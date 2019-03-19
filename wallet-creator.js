@@ -1,6 +1,7 @@
 const { ethers } = require('ethers');
 const db = require('./database.json');
 const fs = require('fs');
+const qr = require('qr-image');
 
 var index = 0;
 
