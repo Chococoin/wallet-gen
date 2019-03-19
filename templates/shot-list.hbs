@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Paper Wallets</title>
+    <style type="text/css">
+        body {
+            font-family: 'Helvetica Neue', Helevetica, Arial, sans-sefif;
+            font-weight: 200;
+        }
+    </style>
+</head>
+    <body>
+        {{#each keys as |key|}}
+            <p>{{key.public}}</p>
+            <p>{{key.private}}</p>
+        {{/each}}
+    </body>
+</html>

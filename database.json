@@ -1,0 +1,20 @@
+{
+    "keys": [
+        {   "id": "1",
+            "public": "OxPublic1",
+            "private": "5alisfhdaslkfsdjb1"
+        },
+        {   "id": "2",
+            "public": "OxPublic2",
+            "private": "5aqlidfshdaslkfsdjb2"
+        },
+        {   "id": "3",
+            "public": "OxPublic3",
+            "private": "5aqlidfsdghdaslkfsdjb3"
+        },
+        {   "id": "4",
+            "public": "OxPublic4",
+            "private": "5aqlidfsdghdaslkfsdjb4"
+        }
+    ]
+}
