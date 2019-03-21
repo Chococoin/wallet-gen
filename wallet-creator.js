@@ -14,13 +14,22 @@ const contractAddress = ChocoToken.networks[3].address;
 const abi = ChocoToken.abi;
 
 const contr = new Contract(contractAddress, abi, wallet);
-
 var index = 0;
 
-while(index < 0){
+function createAndFund(){
     let randomWallet = ethers.Wallet.createRandom();
     let obj= {};
     obj.address = randomWallet.address;
+    console.log("Wallet created");
+    contr.transfer(obj.address, 3)
+        .then(res => res.wait()
+            .then(res => {
+                fund(obj, randomWallet);
+            }).catch(err => console.log(err))
+        ).catch(err => console.log(err))
+};
+
+function fund(obj, randomWallet){
     obj.mnemonic = randomWallet.mnemonic;
     obj.privateKey = randomWallet.privateKey;
     let wal = JSON.stringify(obj);
@@ -42,11 +51,7 @@ while(index < 0){
     } catch(err) {
         console.log("File exists", err);
     }
-    index++;
-}  
+}
 
-console.log(wallet.address);
-provider.getBalance(wallet.address).then(res => {console.log(parseInt(res._hex, 16)/10**18)});
-contr.name().then(res => {
-    console.log(res);
-})
+//contr.transfer(objAddress, 1).then(res => res.wait()).then(res => console.log(res));
+createAndFund();
