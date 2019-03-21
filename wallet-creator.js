@@ -1,11 +1,19 @@
-const { ethers } = require('ethers');
+const { ethers, Contract } = require('ethers');
 const db = require('./database.json');
 const fs = require('fs');
 const qr = require('qr-image');
+const ChocoToken = require('./contract/ChocoToken.json');
+//const mnemonic = 'sniff inspire glide artwork dove share plate observe believe suspect season eager';
+//let mnemonic = "radar blur cabbage chef fix engine embark joy scheme fiction master release";
 
 const provider = new ethers.providers.InfuraProvider( "ropsten", "35964334d3734699b301f626b8a47605" );
-const prv = "20A476C46329458B1CA90EE074D86B0206B16C6541A9103558AD9B3ABC49207E";
+const prv = "488954449c0b5ef75c247882f2c103110e2962e7883ee40d617cc5608dde3c61";
 const wallet = new ethers.Wallet(prv, provider);
+
+const contractAddress = ChocoToken.networks[3].address;
+const abi = ChocoToken.abi;
+
+const contr = new Contract(contractAddress, abi, wallet);
 
 var index = 0;
 
@@ -38,5 +46,7 @@ while(index < 0){
 }  
 
 console.log(wallet.address);
-provider.getBalance(wallet.address).then(res => {console.log(res)}
-);
+provider.getBalance(wallet.address).then(res => {console.log(parseInt(res._hex, 16)/10**18)});
+contr.name().then(res => {
+    console.log(res);
+})
