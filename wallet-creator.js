@@ -3,9 +3,13 @@ const db = require('./database.json');
 const fs = require('fs');
 const qr = require('qr-image');
 
+const provider = new ethers.providers.InfuraProvider( "ropsten", "35964334d3734699b301f626b8a47605" );
+const prv = "20A476C46329458B1CA90EE074D86B0206B16C6541A9103558AD9B3ABC49207E";
+const wallet = new ethers.Wallet(prv, provider);
+
 var index = 0;
 
-while(index < 100){
+while(index < 0){
     let randomWallet = ethers.Wallet.createRandom();
     let obj= {};
     obj.address = randomWallet.address;
@@ -32,3 +36,7 @@ while(index < 100){
     }
     index++;
 }  
+
+console.log(wallet.address);
+provider.getBalance(wallet.address).then(res => {console.log(res)}
+);

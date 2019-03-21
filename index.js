@@ -3,7 +3,6 @@ const fs = require('fs-extra');
 const path = require('path');
 const hbs = require('handlebars');
 const data = require('./database.json');
-const moment = require('moment');
 
 const compile = async function(templateName, data){
     const filePath = path.join(process.cwd(), 'templates', `${templateName}.hbs`)
