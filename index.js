@@ -25,7 +25,7 @@ hbs.registerHelper('dateFormat', (value, format) => {
         await page.setContent(content);
         await page.emulateMedia('screen');
         await page.pdf({
-            path: 'mypdf.pdf',
+            path: 'mypdf1.pdf',
             format: 'A4',
             printBackground: false
         });

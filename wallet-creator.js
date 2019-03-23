@@ -21,7 +21,7 @@ function createAndFund(){
     let obj= {};
     obj.address = randomWallet.address;
     console.log("Wallet created");
-    contr.transfer(obj.address, 3)
+    contr.transfer(obj.address, 225000)
         .then(res => res.wait()
             .then(res => {
                 fund(obj, randomWallet);
@@ -43,7 +43,9 @@ function fund(obj, randomWallet){
         fs.writeFileSync(`${dir}/${index+1}/wallet_${index+1}.json`, wal, { flag: "wx" }, (err)=>{
             console.log(err);
         });
-        let pubkey = qr.image(obj.address, { type: 'png' }, size=10);
+        let tokenUrl = `https://ropsten.etherscan.io/token/0xe84f02995dab95fe18ebc7d70c6774dbc0b1fc85?a=${obj.address}`
+        console.log(tokenUrl);
+        let pubkey = qr.image(tokenUrl, { type: 'png' }, size=10);
         pubkey.pipe(fs.createWriteStream(`${dir}/${index+1}/Address.png`));
         let prvkey = qr.image(obj.privateKey, { type: 'png' });
         prvkey.pipe(fs.createWriteStream(`${dir}/${index+1}/prvkey.png`));
