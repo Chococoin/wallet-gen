@@ -3,19 +3,7 @@
 <head>
     <title>My Paper Wallets</title>
     <style>
-        html, body, div, span, applet, object, iframe,
-        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-        a, abbr, acronym, address, big, cite, code,
-        del, dfn, em, img, ins, kbd, q, s, samp,
-        small, strike, strong, sub, sup, tt, var,
-        b, u, i, center,
-        dl, dt, dd, ol, ul, li,
-        fieldset, form, label, legend,
-        table, caption, tbody, tfoot, thead, tr, th, td,
-        article, aside, canvas, details, embed, 
-        figure, figcaption, footer, header, hgroup, 
-        menu, nav, output, ruby, section, summary,
-        time, mark, audio, video {
+        * {
 	        margin: 0;
 	        padding: 0;
 	        border: 0;
@@ -55,61 +43,150 @@
         .column {
             float: left;
             font-size: 3em;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-            width: 50%;
-            height: 100%;
-            background-color: beige;
+            width: calc(50% - 0.5mm);
+            height: calc(100% - 0.25mm);
+            background-color:  lightgrey;
+            border: 0.5mm solid beige;
+        }
+
+        p {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: inline;
+            position: relative;
+            color: black;
+            font-size: 4mm;
+            left: 9mm;
+            bottom: 4mm;
+            clear: both;
+            margin-right: 22mm;
+        }
+
+        .p_right {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: inline;
+            position: relative;
+            color: black;
+            font-size: 4mm;
+            clear: both;
+            margin-right: 0mm;
+        }
+
+        .info {
+            display: block;
+            font-size: 3mm;
+        }
+
+        .info::before {
+            content: "Per più informazione www.efoodacademy.com/ "
+        }
+
+        .qr_left {
+            position: relative;
+            height: 35mm;
+            width: 35mm;
+            top: 5mm;
+            left: 6mm;
+            border-radius: 4mm;
+        }
+
+        .qr_right {
+            position: relative;
+            height: 35mm;
+            width: 35mm;
+            top: 5mm;
+            left: 19mm;
+            border-radius: 4mm;
         }
     </style>
 </head>
     <body>
             <div class="rowUp">
                 <div class="column">
-                    <img alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\Address.png"/>  
+                    <img class="qr_left" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\Address.png"/>
+                    <img class="qr_right" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\prvkey.png"/>
+                    </br>
+                    <p>Chiave Pubblica</p>
+                    <p class="p_right">Chiave Privata</p>
+                    <p class="info"></p>
                 </div>
                 <div class="column">
-                    <p>Hello Word</p>
-                    <p>Hola mundo</p>
+                    <img class="qr_left" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\Address.png"/>
+                    <img class="qr_right" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\prvkey.png"/>
+                    </br>
+                    <p>Chiave Pubblica</p>
+                    <p class="p_right">Chiave Privata</p>
+                    <p class="info"></p>
                 </div>
             </div>
             <div class="row">
                 <div class="column">
-                    <p>Hello Word</p>
-                    <p>Hola mundo</p>
+                    <img class="qr_left" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\Address.png"/>
+                    <img class="qr_right" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\prvkey.png"/>
+                    </br>
+                    <p>Chiave Pubblica</p>
+                    <p class="p_right">Chiave Privata</p>
+                    <p class="info"></p>
                 </div>
                 <div class="column">
-                    <p>Hello Word</p>
-                    <p>Hola mundo</p>
+                    <img class="qr_left" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\Address.png"/>
+                    <img class="qr_right" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\prvkey.png"/>
+                    </br>
+                    <p>Chiave Pubblica</p>
+                    <p class="p_right">Chiave Privata</p>
+                    <p class="info"></p>
                 </div>
             </div>
             <div class="row">
                 <div class="column">
-                    <p>Hello Word</p>
-                    <p>Hola mundo</p>
+                    <img class="qr_left" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\Address.png"/>
+                    <img class="qr_right" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\prvkey.png"/>
+                    </br>
+                    <p>Chiave Pubblica</p>
+                    <p class="p_right">Chiave Privata</p>
+                    <p class="info"></p>
                 </div>                
                 <div class="column">
-                    <p>Hello Word</p>
-                    <p>Hola mundo</p>
+                    <img class="qr_left" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\Address.png"/>
+                    <img class="qr_right" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\prvkey.png"/>
+                    </br>
+                    <p>Chiave Pubblica</p>
+                    <p class="p_right">Chiave Privata</p>
+                    <p class="info"></p>
                 </div>
             </div>
             <div class="row">
                 <div class="column">
-                    <p>Hello Word</p>
-                    <p>Hola mundo</p>
+                    <img class="qr_left" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\Address.png"/>
+                    <img class="qr_right" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\prvkey.png"/>
+                    </br>
+                    <p>Chiave Pubblica</p>
+                    <p class="p_right">Chiave Privata</p>
+                    <p class="info"></p>
                 </div>
                 <div class="column">
-                    <p>Hello Word</p>
-                    <p>Hola mundo</p>
+                    <img class="qr_left" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\Address.png"/>
+                    <img class="qr_right" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\prvkey.png"/>
+                    </br>
+                    <p>Chiave Pubblica</p>
+                    <p class="p_right">Chiave Privata</p>
+                    <p class="info"></p>
                 </div>
             </div>
             <div class="rowDown">
                 <div class="column">
-                    <p>Hello Word</p>
-                    <p>Hola mundo</p>
+                    <img class="qr_left" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\Address.png"/>
+                    <img class="qr_right" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\prvkey.png"/>
+                    </br>
+                    <p>Chiave Pubblica</p>
+                    <p class="p_right">Chiave Privata</p>
+                    <p class="info"></p>
                 </div>
                 <div class="column">
-                    <p>Hello Word</p>
-                    <p>Hola mundo</p>
+                    <img class="qr_left" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\Address.png"/>
+                    <img class="qr_right" alt="qr-img" src="file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\prvkey.png"/>
+                    </br>
+                    <p>Chiave Pubblica</p>
+                    <p class="p_right">Chiave Privata</p><p class="info"></p>
                 </div>
             </div>
     </body>
