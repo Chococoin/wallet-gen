@@ -3,9 +3,10 @@ const db = require('./database.json');
 const fs = require('fs');
 const qr = require('qr-image');
 const ChocoToken = require('./contract/ChocoToken.json');
-//const mnemonic = 'sniff inspire glide artwork dove share plate observe believe suspect season eager';
-//let mnemonic = "radar blur cabbage chef fix engine embark joy scheme fiction master release";
-
+var pdf = require('html-pdf');
+var html = fs.readFileSync('./templates/index.html', 'utf8');
+var options = { format: "A4",  type: "pdf", base: "file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\" };
+ 
 const provider = new ethers.providers.InfuraProvider( "ropsten", "35964334d3734699b301f626b8a47605" );
 const prv = "488954449c0b5ef75c247882f2c103110e2962e7883ee40d617cc5608dde3c61";
 const wallet = new ethers.Wallet(prv, provider);
@@ -15,18 +16,30 @@ const abi = ChocoToken.abi;
 
 const contr = new Contract(contractAddress, abi, wallet);
 var index = 0;
+var flow = true
+var inFlow = flow && index < 10;
 
 function createAndFund(){
-    let randomWallet = ethers.Wallet.createRandom();
-    let obj= {};
-    obj.address = randomWallet.address;
-    console.log("Wallet created");
-    contr.transfer(obj.address, 225000)
-        .then(res => res.wait()
+    console.log(inFlow);
+    if(inFlow){
+        flow = !flow;
+        console.log("Flow", flow);
+        index++;
+        let randomWallet = ethers.Wallet.createRandom();
+        let obj= {};
+        obj.address = randomWallet.address;
+        console.log("Wallet created");
+        contr.transfer(obj.address, 225000)
+            .then(res => res.wait()
             .then(res => {
                 fund(obj, randomWallet);
-            }).catch(err => console.log(err))
-        ).catch(err => console.log(err))
+                    }).catch(err => console.log(err))
+                ).catch(err => console.log(err));
+        console.log(index);
+    } else {
+        console.log("Waiting funds!")
+    }
+    if( index > 10) clearInterval(run);
 };
 
 function fund(obj, randomWallet){
@@ -37,6 +50,8 @@ function fund(obj, randomWallet){
     if (!fs.existsSync(dir)){
         fs.mkdirSync(dir);
         console.log(`Batch ${dir} created.`);
+    } else {
+        console.log(`Batch ${dir} not created.`)
     }
     try {
         fs.mkdirSync(`${dir}/${index+1}`);
@@ -44,16 +59,39 @@ function fund(obj, randomWallet){
             console.log(err);
         });
         let tokenUrl = `https://ropsten.etherscan.io/token/0xe84f02995dab95fe18ebc7d70c6774dbc0b1fc85?a=${obj.address}`
-        console.log(tokenUrl);
         let pubkey = qr.image(tokenUrl, { type: 'png' }, size=10);
         pubkey.pipe(fs.createWriteStream(`${dir}/${index+1}/Address.png`));
+        pubkey.pipe(fs.createWriteStream('./magazine/cache/Address.png'));
         let prvkey = qr.image(obj.privateKey, { type: 'png' });
         prvkey.pipe(fs.createWriteStream(`${dir}/${index+1}/prvkey.png`));
+        prvkey.pipe(fs.createWriteStream('./magazine/cache/prvkey.png'));
         console.log(`File "${index+1}.json" created`);
+        flow = true;
     } catch(err) {
         console.log("File exists", err);
     }
+    print(dir, obj)
+}
+
+function print(dir, obj){
+    pdf.create(html, options).toFile(`${dir}/${index+1}/${obj.address}.pdf`, function(err, res) {
+        if (err) return console.log(err);
+        console.log(res);
+    });
+}
+
+function checkTx(){
+    if (inFlow) createAndFund();
+    if (!inFlow) setTimeout(() => {
+        if(!inFlow) { 
+            console.log("waiting"); 
+            checkTx();
+        } else {
+            console.log("Next step!");
+            return
+        }
+    }, 2000);
 }
 
 //contr.transfer(objAddress, 1).then(res => res.wait()).then(res => console.log(res));
-createAndFund();
+var run = setInterval(checkTx, 15000);
