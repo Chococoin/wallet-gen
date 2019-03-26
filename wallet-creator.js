@@ -19,12 +19,12 @@ const contr = new Contract(contractAddress, abi, wallet);
 var index = 0;
 
 
-function createAndFund(){
+async function createAndFund(){
     var randomWallet = ethers.Wallet.createRandom();
     var obj= {};
     obj.address = randomWallet.address;
     console.log("Wallet created");
-    Q.all(transfer(obj, randomWallet));
+    return await transfer(obj, randomWallet);
 };
 
 function fund(obj, randomWallet){
@@ -35,6 +35,9 @@ function fund(obj, randomWallet){
     if (!fs.existsSync(dir)){
         fs.mkdirSync(dir);
         console.log(`Batch ${dir} created.`);
+        if (index > 0) {
+            print(dir, obj)
+        }
     } else {
         console.log(`Batch ${dir} not created.`)
     }
@@ -46,40 +49,36 @@ function fund(obj, randomWallet){
         let tokenUrl = `https://ropsten.etherscan.io/token/0xe84f02995dab95fe18ebc7d70c6774dbc0b1fc85?a=${obj.address}`
         let pubkey = qr.image(tokenUrl, { type: 'png' }, size=10);
         pubkey.pipe(fs.createWriteStream(`${dir}/${index+1}/Address.png`));
-        pubkey.pipe(fs.createWriteStream('./magazine/cache/Address.png'));
+        fs.mkdirSync(`./magazine/cache/${Math.floor(((index)/10)+1)%10}`);
+        pubkey.pipe(fs.createWriteStream(`./magazine/cache/${Math.floor(((index)/10)+1)%10}`));
         let prvkey = qr.image(obj.privateKey, { type: 'png' });
-        prvkey.pipe(fs.createWriteStream(`${dir}/${index+1}/prvkey.png`));
+        prvkey.pipe(fs.createWriteStream(`${dir}/${(index+1)/10}/prvkey.png`));
         prvkey.pipe(fs.createWriteStream('./magazine/cache/prvkey.png'));
         console.log(`File "${index+1}.json" created`);
         index++;
-        if( index > 10) clearInterval(run);
+        if( index > 1000) clearInterval(run);
     } catch(err) {
         console.log("File exists", err);
     }
-    //print(dir, obj)
 }
 
-function transfer(obj, randomWallet){
-    contr.transfer(obj.address, 225000)
+async function transfer(obj, randomWallet){
+    await contr.transfer(obj.address, 225000)
         .then(res => res.wait()
         .then(res => {
             fund(obj, randomWallet);
                 }).catch(err => console.log(err))
             ).catch(err => console.log(err));
-    console.log(index);
 }
 
 function print(dir, obj){
-    pdf.create(html, options).toFile(`${dir}/${index+1}/${obj.address}.pdf`, function(err, res) {
+    pdf.create(html, options).toFile(`${dir}/batch_${index}/${obj.address}.pdf`, function(err, res) {
         if (err) return console.log(err);
         console.log(res);
     });
 }
 
-
 //contr.transfer(objAddress, 1).then(res => res.wait()).then(res => console.log(res));
 //var run = setInterval(createAndFund, 15000);
 
-while(index < 10) {
-    createAndFund();
-}
+var run = setInterval(() => Q.all([createAndFund()]), 2000);
