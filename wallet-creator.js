@@ -5,6 +5,7 @@ const qr = require('qr-image');
 const ChocoToken = require('./contract/ChocoToken.json');
 var pdf = require('html-pdf');
 var html = fs.readFileSync('./templates/index.html', 'utf8');
+var Q = require('q');
 var options = { format: "A4",  type: "pdf", base: "file:\\\C:\\Users\\Choco\\Repos\\wallet-gen\\magazine\\batch_1\\1\\" };
  
 const provider = new ethers.providers.InfuraProvider( "ropsten", "35964334d3734699b301f626b8a47605" );
@@ -16,30 +17,14 @@ const abi = ChocoToken.abi;
 
 const contr = new Contract(contractAddress, abi, wallet);
 var index = 0;
-var flow = true
-var inFlow = flow && index < 10;
+
 
 function createAndFund(){
-    console.log(inFlow);
-    if(inFlow){
-        flow = !flow;
-        console.log("Flow", flow);
-        index++;
-        let randomWallet = ethers.Wallet.createRandom();
-        let obj= {};
-        obj.address = randomWallet.address;
-        console.log("Wallet created");
-        contr.transfer(obj.address, 225000)
-            .then(res => res.wait()
-            .then(res => {
-                fund(obj, randomWallet);
-                    }).catch(err => console.log(err))
-                ).catch(err => console.log(err));
-        console.log(index);
-    } else {
-        console.log("Waiting funds!")
-    }
-    if( index > 10) clearInterval(run);
+    var randomWallet = ethers.Wallet.createRandom();
+    var obj= {};
+    obj.address = randomWallet.address;
+    console.log("Wallet created");
+    Q.all(transfer(obj, randomWallet));
 };
 
 function fund(obj, randomWallet){
@@ -66,11 +51,22 @@ function fund(obj, randomWallet){
         prvkey.pipe(fs.createWriteStream(`${dir}/${index+1}/prvkey.png`));
         prvkey.pipe(fs.createWriteStream('./magazine/cache/prvkey.png'));
         console.log(`File "${index+1}.json" created`);
-        flow = true;
+        index++;
+        if( index > 10) clearInterval(run);
     } catch(err) {
         console.log("File exists", err);
     }
-    print(dir, obj)
+    //print(dir, obj)
+}
+
+function transfer(obj, randomWallet){
+    contr.transfer(obj.address, 225000)
+        .then(res => res.wait()
+        .then(res => {
+            fund(obj, randomWallet);
+                }).catch(err => console.log(err))
+            ).catch(err => console.log(err));
+    console.log(index);
 }
 
 function print(dir, obj){
@@ -80,18 +76,10 @@ function print(dir, obj){
     });
 }
 
-function checkTx(){
-    if (inFlow) createAndFund();
-    if (!inFlow) setTimeout(() => {
-        if(!inFlow) { 
-            console.log("waiting"); 
-            checkTx();
-        } else {
-            console.log("Next step!");
-            return
-        }
-    }, 2000);
-}
 
 //contr.transfer(objAddress, 1).then(res => res.wait()).then(res => console.log(res));
-var run = setInterval(checkTx, 15000);
+//var run = setInterval(createAndFund, 15000);
+
+while(index < 10) {
+    createAndFund();
+}
